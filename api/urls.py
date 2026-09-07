@@ -1,0 +1,83 @@
+from django.urls import path
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+from .views import (
+    AnalyticsView,
+    AnnouncementListCreateView,
+    AuditLogListView,
+    CategoryListView,
+    ChatbotView,
+    CommentListCreateView,
+    ComplaintAttachmentUploadView,
+    ComplaintBulkUpdateView,
+    ComplaintDetailView,
+    ComplaintListCreateView,
+    ComplaintOverdueView,
+    ComplaintReopenView,
+    FAQListView,
+    GoogleLoginCallbackView,
+    GoogleLoginRedirectView,
+    MeView,
+    NotificationListView,
+    NotificationMarkReadView,
+    PasswordChangeView,
+    RequestOTPView,
+    ReviewCreateView,
+    ScheduledWorkListCreateView,
+    TriageView,
+    VerifyOTPView,
+)
+
+
+urlpatterns = [
+    path("login/", TokenObtainPairView.as_view(), name="login"),
+    path("login/refresh/", TokenRefreshView.as_view(), name="login-refresh"),
+    path("me/", MeView.as_view(), name="me"),
+    path("me/password/", PasswordChangeView.as_view(), name="password-change"),
+    path("complaints/", ComplaintListCreateView.as_view(), name="complaint-list"),
+    path("complaints/bulk/", ComplaintBulkUpdateView.as_view(), name="complaint-bulk"),
+    path("complaints/overdue/", ComplaintOverdueView.as_view(), name="complaint-overdue"),
+    path("complaints/<int:pk>/", ComplaintDetailView.as_view(), name="complaint-detail"),
+    path(
+        "complaints/<int:complaint_id>/attachments/",
+        ComplaintAttachmentUploadView.as_view(),
+        name="complaint-attachment",
+    ),
+    path(
+        "complaints/<int:complaint_id>/comments/",
+        CommentListCreateView.as_view(),
+        name="complaint-comments",
+    ),
+    path(
+        "complaints/<int:complaint_id>/review/",
+        ReviewCreateView.as_view(),
+        name="complaint-review",
+    ),
+    path(
+        "complaints/<int:complaint_id>/reopen/",
+        ComplaintReopenView.as_view(),
+        name="complaint-reopen",
+    ),
+    path("notifications/", NotificationListView.as_view(), name="notification-list"),
+    path(
+        "notifications/<int:pk>/",
+        NotificationMarkReadView.as_view(),
+        name="notification-detail",
+    ),
+    path("categories/", CategoryListView.as_view(), name="category-list"),
+    path("announcements/", AnnouncementListCreateView.as_view(), name="announcement-list"),
+    path("scheduled-works/", ScheduledWorkListCreateView.as_view(), name="scheduled-work-list"),
+    path("faq/", FAQListView.as_view(), name="faq-list"),
+    path("audit-logs/", AuditLogListView.as_view(), name="audit-log-list"),
+    path("analytics/", AnalyticsView.as_view(), name="analytics"),
+    path("analytics/range/", AnalyticsView.as_view(), name="analytics-range"),
+    path("triage/", TriageView.as_view(), name="triage"),
+    path("chatbot/", ChatbotView.as_view(), name="chatbot"),
+    path("auth/otp/request/", RequestOTPView.as_view(), name="request-otp"),
+    path("auth/otp/verify/", VerifyOTPView.as_view(), name="verify-otp"),
+    # Backwards-compatible aliases used by the earlier API draft.
+    path("auth/request-otp/", RequestOTPView.as_view()),
+    path("auth/verify-otp/", VerifyOTPView.as_view()),
+    path("auth/google/login/", GoogleLoginRedirectView.as_view(), name="google-login"),
+    path("auth/google/callback/", GoogleLoginCallbackView.as_view(), name="google-callback"),
+]
